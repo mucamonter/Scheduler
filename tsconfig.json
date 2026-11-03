@@ -9,7 +9,7 @@
     "strict": true,
     "esModuleInterop": true,
     
-    // 🔥 OTIMIZAÇÕES CRUCIAIS PARA ECONOMIZAR RAM:
+    // OTIMIZAÇÕES CRUCIAIS PARA ECONOMIZAR RAM:
     "noEmit": false,                   // CORRIGIDO: O NestJS precisa emitir arquivos para a pasta dist
     "allowJs": false,                  // Desativado se o seu projeto for puramente TypeScript
     "checkJs": false,                  // Desativado: Evita validar a semântica de arquivos JS
