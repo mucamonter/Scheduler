@@ -6,7 +6,11 @@ It works in website that have admin (more functions) and the 'balconista' that i
 
 ## REQUIREMENTS
 >WSL 2
+
+
 Docker Desktop
+
+
 >And the project
 
 ## Step by Step
