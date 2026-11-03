@@ -5,9 +5,9 @@ This is my first docker project that is stable and works fine, enjoy :)
 It works in website that have admin (more functions) and the 'balconista' that is simple and focus to create schedules, futhermore a 'cidadão' that can create an account and schedule in your home, you can just not use this function if you want.
 
 ## REQUIREMENTS
-WSL 2
-Docker Desktop
-And the project
+>WSL 2
+>Docker Desktop
+>And the project
 
 ## Step by Step
 
