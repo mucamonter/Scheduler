@@ -1,6 +1,7 @@
-import { Controller, Get, Query, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Query, BadRequestException, UseGuards } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 
+@UseGuards(AdminPainelController)
 @Controller('admin')
 export class AdminPainelController {
   constructor(private readonly prisma: PrismaService) {}
@@ -25,6 +26,7 @@ export class AdminPainelController {
   }
 
   // Rota: GET /api/admin/pendencias
+  @UseGuards(AdminPainelController)
   @Get('pendencias')
   async listarPendencias() {
     const agendamentos = await this.prisma.agendamentos.findMany({
