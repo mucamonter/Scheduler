@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'node:path';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 
 // Controllers Públicos e Autenticação
 import { AuthController } from './auth/auth.controller';
@@ -20,10 +20,16 @@ import { AdminGuard } from './common/guards/admin.guard';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 10,
+        },
+      ],
       rootPath: join(process.cwd(), 'app'),
-      exclude: ['/api/*path'], // Evita que rotas da API caiam no index.html
-    }),
+      exclude: ['/api/*path'],
+    })
   ],
   controllers: [
     AuthController,

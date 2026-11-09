@@ -13,7 +13,7 @@ export class AdminGuard implements CanActivate{
             throw new UnauthorizedException('Autenticação necessária');
         }
 
-        const papeisPermitidos = ['admin', 'visualisador'];
+        const papeisPermitidos = ['admin', 'visualizador'];
         if(!papeisPermitidos.includes(papel)){
             throw new ForbiddenException('Acesso negado.');
         }

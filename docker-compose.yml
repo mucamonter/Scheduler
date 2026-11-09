@@ -16,7 +16,7 @@ services:
       - mysql_data:/var/lib/mysql
       - ./src/prisma:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "mariadb-admin ping -h 0.0.0.0 -u root -pArdmin321 --silent || exit 1"]
+      test: ["CMD-SHELL", "mariadb-admin ping -h 0.0.0.0 -u root --silent || exit 1"]
       interval: 30s
       timeout: 5s
       retries: 20

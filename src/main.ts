@@ -1,14 +1,26 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.modules'; // Corrigido de app.modules para app.module
 import session from 'express-session';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 1. Configura o prefixo global (/api) para todas as rotas
   app.setGlobalPrefix('api');
 
-  // 2. Habilita CORS com envio de credenciais (cookies de sessão)
+  app.use(cookieParser)
+
+  app.use(
+    csurf({
+      cookie: {
+        key: '_csrf',
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        samSite: 'lax',
+      },
+    }),
+  );
+
   app.enableCors({
     origin: true,
     credentials: true,
@@ -17,7 +29,7 @@ async function bootstrap() {
   // 3. Configuração do middleware de sessão
   app.use(
     session({
-      secret: process.env.SESSION_SECRET || 'sua-chave-secreta-aqui',
+      secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
       cookie: {
