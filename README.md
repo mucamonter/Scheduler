@@ -14,9 +14,6 @@ Docker Desktop
 >And the project
 
 ## Step by Step
-
-Use the v4 folder, v4_ use other way.
-
 1. Download the zip or do it with git push in your terminal
 2. Rename .env.example to just .env
 3. Configure the .env.example to you context. Change the (DbName) and (DbPassword) in both DATABASE_URL acording to what you put in.
