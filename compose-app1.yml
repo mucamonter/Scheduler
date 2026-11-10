@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  app1:
+    build: ./app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      ADMIN_USER: "${ADMIN_USER}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+      DATABASE_URL: "${DATABASE_URL}"
+      SESSION_SECRET: "${SESSION_SECRET}"
+      PORT: "${PORT}"
+    
+    networks:
+      - shared_newtork_db
+
+networks:
+  newtork_db:
+    external: true
+    name: shared_newtork_db 

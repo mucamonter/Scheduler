@@ -1,0 +1,11 @@
+allowBuilds:
+  '@parcel/watcher': set this to true or false
+  '@parcel/watcher@2.6.0': true
+  '@prisma/engines': set this to true or false
+  '@prisma/engines@7.10.1': true
+  '@swc/core': set this to true or false
+  '@swc/core@1.16.22': true
+  esbuild: set this to true or false
+  esbuild@0.28.2: true
+  prisma: set this to true or false
+  prisma@7.10.1: true
