@@ -1,42 +1,47 @@
 services:
+
+#-----------------------------------------------
   db:
+
     image: mariadb:lts
     container_name: mariadb-server
+    restart: unless-stopped
+    #---
+
     ports:
       - "3306:3306"
-    restart: unless-stopped
+    #---
     env_file:
       - .env
+    #---
     environment:
       MYSQL_USER: "${DB_USER}"
       MYSQL_ROOT_PASSWORD: "${ADMIN_PASSWORD}"
       MYSQL_DATABASE: "mydb"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
+    #---
     volumes:
       - mysql_data:/var/lib/mysql
       - .backend/src/prisma:/docker-entrypoint-initdb.d:ro
+    
     healthcheck:
-      test: ["CMD-SHELL", "mariadb-admin ping -h 0.0.0.0 -u root --silent || exit 1"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 30s
       timeout: 5s
       retries: 20
-
-
+#---------------------------------------------------
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile.backend
       target: ${NODE_ENV}
-    args:
-        - BACKEND_PORT=${BACKEND_PORT}
+        
     ports: 
-    - "${BACKEND_PORT}:${BACKEND_PORT}"
+    - "${HOST_PORT}:${CONTAINER_PORT}"
     environment:
         - DATABASE_URL=${DATABASE_URL}
-        - BACKEND_PORT=${BACKEND_PORT}
         
-    command: sh -c "pnpm exec prisma db push --schema=prisma/schema.prisma && pnpm start:prod"
-
+    command: sh -c "pnpm exec prisma db push --schema=schema.prisma && pnpm start:prod"
 
   frontend:
     build:
@@ -44,7 +49,7 @@ services:
       dockerfile: Dockerfile.frontend
       target: ${NODE_ENV}
     ports:
-      - "3000:3000"
+      - "${CONTAINER_PORT}:${CONTAINER_PORT}"
     restart: unless-stopped
     env_file:
       - .env
@@ -52,14 +57,13 @@ services:
       DB_USER: "${DB_USER}"
       DB_PASSWORD: "${DB_PASSWORD}"
       DB_NAME: "${DB_NAME}"
-      DB_HOST: "db"
-      DB_PORT: "3306"
-      BACKEND_PORT: ${BACKEND_PORT}
+      DB_HOST: "mariadb"
+      DB_PORT: ${DB_PORT}   
       ADMIN_USER: "${ADMIN_USER}"
       ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
       DATABASE_URL: "${DATABASE_URL}"
       SESSION_SECRET: "${SESSION_SECRET}"
-      PORT: "3000"
+      PORT: ${CONTAINER_PORT}
       NODE_ENV: ${NODE_ENV}
     
     depends_on:
